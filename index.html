@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game da Cobrinha 2K25</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!-- Menu Principal -->
+    <div id="menu">
+        <h1>Game da Cobrinha 2K25</h1>
+        <button id="play-btn">Jogar</button>
+        <button id="shop-btn">Loja</button>
+        <button id="exit-btn">Sair</button>
+    </div>
+
+    <!-- Tela do Jogo -->
+    <div id="game-container" class="hidden">
+        <div id="score">Pontuação: 0</div>
+        <canvas id="gameCanvas" width="400" height="400"></canvas>
+        <button id="resetBtn">Reiniciar</button>
+    </div>
+
+    <!-- Tela de Game Over -->
+    <div id="game-over" class="hidden">
+        <h2>Game Over!</h2>
+        <div id="final-score">Pontuação: 0</div>
+        <button id="try-again-btn">Tentar Novamente</button>
+        <button id="game-over-exit">Voltar ao Menu</button>
+    </div>
+
+    <!-- Loja de Skins -->
+    <div id="shop" class="hidden">
+        <h2>Loja de Skins</h2>
+        <div id="shop-coins">Moedas: 100</div>
+        <div id="skins-container"></div>
+        <button id="shop-exit">Voltar ao Menu</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
