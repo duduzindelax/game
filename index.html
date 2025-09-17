@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game da Cobrinha 2K25 com Inimigos</title>
+    <title>Snake 2K25</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -13,55 +13,92 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #1a1a2e;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
             color: white;
+            overflow: hidden;
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
         }
         
         #menu, #game-container, #game-over, #shop {
             text-align: center;
-            background-color: #16213e;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            background-color: rgba(26, 33, 62, 0.9);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+            border: 2px solid #e94560;
+            width: 400px;
         }
         
         #gameCanvas {
             background-color: #0f3460;
             border: 2px solid #e94560;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+        }
+        
+        h1 {
+            color: #e94560;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            margin-top: 0;
+            font-size: 2.5em;
+        }
+        
+        h2 {
+            color: #e94560;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
         }
         
         button {
-            background-color: #e94560;
+            background: linear-gradient(to bottom, #e94560, #c53d54);
             color: white;
             border: none;
-            padding: 10px 20px;
-            margin: 5px;
-            border-radius: 5px;
+            padding: 12px 25px;
+            margin: 8px;
+            border-radius: 8px;
             cursor: pointer;
             font-size: 16px;
             transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
         }
         
         button:hover {
-            background-color: #c53d54;
-            transform: scale(1.05);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.4);
+        }
+        
+        button:active {
+            transform: translateY(1px);
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-bottom: 10px;
         }
         
         .skin-item {
             display: flex;
             align-items: center;
-            margin: 10px 0;
-            padding: 10px;
+            margin: 12px 0;
+            padding: 12px;
             border: 1px solid #e94560;
-            border-radius: 5px;
+            border-radius: 8px;
+            background: rgba(15, 52, 96, 0.3);
         }
         
         .skin-preview {
-            width: 30px;
-            height: 30px;
+            width: 35px;
+            height: 35px;
             border-radius: 50%;
             margin-right: 15px;
+            border: 2px solid #e94560;
         }
         
         .skin-info {
@@ -69,16 +106,19 @@
             text-align: left;
         }
         
-        .buy-btn {
-            background-color: #0f3460;
+        .skin-name {
+            font-weight: bold;
+            color: #e94560;
         }
         
-        .buy-btn:hover {
-            background-color: #1a5fb4;
+        .buy-btn {
+            background: linear-gradient(to bottom, #0f3460, #1a5fb4);
+            padding: 8px 15px;
+            font-size: 14px;
         }
         
         .buy-btn.equipped {
-            background-color: #9E9E9E;
+            background: linear-gradient(to bottom, #9E9E9E, #757575);
             cursor: default;
         }
         
@@ -95,61 +135,72 @@
         
         #score, #level {
             font-size: 18px;
-            margin-bottom: 10px;
             color: #e94560;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
         }
         
         .hidden {
             display: none;
         }
         
-        h1, h2 {
-            color: #e94560;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-        }
-        
         .instructions {
             margin-top: 20px;
             font-size: 14px;
             color: #8a8a8a;
+            text-align: center;
+        }
+        
+        .game-title {
+            font-size: 3em;
+            margin-bottom: 20px;
+            color: #e94560;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+            letter-spacing: 2px;
         }
     </style>
 </head>
 <body>
-    <!-- Menu Principal -->
-    <div id="menu">
-        <h1>Game da Cobrinha 2K25</h1>
-        <p>Use as setas do teclado para controlar a cobra</p>
-        <button id="play-btn">Jogar</button>
-        <button id="shop-btn">Loja</button>
-        <button id="exit-btn">Sair</button>
-        <div class="instructions">
-            <p>Cuidado com os inimigos vermelhos! Eles ficam mais difíceis a cada ponto.</p>
+    <div class="container">
+        <div class="game-title">Snake 2K25</div>
+        
+        <!-- Menu Principal -->
+        <div id="menu">
+            <h1>Menu Principal</h1>
+            <p>Use as setas do teclado para controlar a cobra</p>
+            <button id="play-btn">Jogar</button>
+            <button id="shop-btn">Loja</button>
+            <button id="exit-btn">Sair</button>
+            <div class="instructions">
+                <p>Cuidado com os inimigos vermelhos! Eles ficam mais difíceis a cada ponto.</p>
+            </div>
         </div>
-    </div>
 
-    <!-- Tela do Jogo -->
-    <div id="game-container" class="hidden">
-        <div id="score">Pontuação: 0</div>
-        <div id="level">Nível do Inimigo: 1</div>
-        <canvas id="gameCanvas" width="400" height="400"></canvas>
-        <button id="resetBtn">Reiniciar</button>
-    </div>
+        <!-- Tela do Jogo -->
+        <div id="game-container" class="hidden">
+            <div class="stats">
+                <div id="score">Pontuação: 0</div>
+                <div id="level">Nível do Inimigo: 1</div>
+            </div>
+            <canvas id="gameCanvas" width="400" height="400"></canvas>
+            <button id="resetBtn">Reiniciar</button>
+        </div>
 
-    <!-- Tela de Game Over -->
-    <div id="game-over" class="hidden">
-        <h2>Game Over!</h2>
-        <div id="final-score">Pontuação: 0</div>
-        <button id="try-again-btn">Tentar Novamente</button>
-        <button id="game-over-exit">Voltar ao Menu</button>
-    </div>
+        <!-- Tela de Game Over -->
+        <div id="game-over" class="hidden">
+            <h2>Game Over!</h2>
+            <div id="final-score">Pontuação: 0</div>
+            <button id="try-again-btn">Tentar Novamente</button>
+            <button id="game-over-exit">Voltar ao Menu</button>
+        </div>
 
-    <!-- Loja de Skins -->
-    <div id="shop" class="hidden">
-        <h2>Loja de Skins</h2>
-        <div id="shop-coins">Moedas: 100</div>
-        <div id="skins-container"></div>
-        <button id="shop-exit">Voltar ao Menu</button>
+        <!-- Loja de Skins -->
+        <div id="shop" class="hidden">
+            <h2>Loja de Skins</h2>
+            <div id="shop-coins">Moedas: 100</div>
+            <div id="skins-container"></div>
+            <button id="shop-exit">Voltar ao Menu</button>
+        </div>
     </div>
 
     <script>
